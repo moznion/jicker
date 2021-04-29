@@ -12,8 +12,6 @@ package main
 import (
 	"context"
 	"log"
-	"math"
-	"testing"
 	"time"
 
 	"github.com/moznion/jicker"
