@@ -41,7 +41,7 @@ func TestJicker_Tick_WithFixed(t *testing.T) {
 	i := 1
 	c := NewJicker().Tick(ctx, 500*time.Millisecond, 0)
 	for t := range c {
-		if i >= 3 {
+		if i >= 1 {
 			cancelFunc()
 		}
 		log.Printf("[debug] %v", t)
@@ -51,7 +51,7 @@ func TestJicker_Tick_WithFixed(t *testing.T) {
 	end := time.Now()
 
 	elapsedDuration := end.Sub(begin)
-	if float64(elapsedDuration) < 1.5*math.Pow10(9) || float64(elapsedDuration) > 1.52*math.Pow10(9) {
+	if float64(elapsedDuration) < 5*math.Pow10(8) || float64(elapsedDuration) > 5.2*math.Pow10(8) {
 		t.Errorf("elapsed time is out of range unexpectedly; elapsedDuration = %v", float64(elapsedDuration))
 	}
 }
@@ -97,7 +97,7 @@ func TestJicker_TickBetween_WithFixed(t *testing.T) {
 	}
 
 	for t := range c {
-		if i >= 3 {
+		if i >= 1 {
 			cancelFunc()
 		}
 		log.Printf("[debug] %v", t)
@@ -107,7 +107,7 @@ func TestJicker_TickBetween_WithFixed(t *testing.T) {
 	end := time.Now()
 
 	elapsedDuration := end.Sub(begin)
-	if float64(elapsedDuration) < 1.5*math.Pow10(9) || float64(elapsedDuration) > 1.52*math.Pow10(9) {
+	if float64(elapsedDuration) < 5*math.Pow10(8) || float64(elapsedDuration) > 5.2*math.Pow10(8) {
 		t.Errorf("elapsed time is out of range unexpectedly; elapsedDuration = %v", float64(elapsedDuration))
 	}
 }
