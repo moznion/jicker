@@ -7,7 +7,7 @@ A jittered-ticker library for go.
 ## Usage
 
 ```go
-package jicker
+package main
 
 import (
 	"context"
