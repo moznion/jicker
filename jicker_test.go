@@ -57,10 +57,11 @@ func TestJicker_Tick_WithFixed(t *testing.T) {
 }
 
 func ExampleJicker_Tick() {
+	// if this `ctx` has done, ticking stops and it closes the ticker channel.
 	ctx, cancelFunc := context.WithCancel(context.Background())
 	defer cancelFunc()
 
-	// it ticks by jittered duration (i.e. 1±5% sec)
+	// it ticks by jittered duration (i.e. 1±5% sec); it evaluates the duration with the jitter factor every time.
 	c := NewJicker().Tick(ctx, 1*time.Second, 0.05)
 	for t := range c {
 		log.Printf("tick: %v", t)
