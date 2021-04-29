@@ -30,6 +30,36 @@ func main() {
 }
 ```
 
+```go
+package main
+
+import (
+	"context"
+	"log"
+	"time"
+
+	"github.com/moznion/jicker"
+)
+
+func main() {
+	// if this `ctx` has done, ticking stops and it closes the ticker channel.
+	ctx, cancelFunc := context.WithCancel(context.Background())
+	defer cancelFunc()
+
+	// it ticks by jittered interval duration; random duration is between [minimumDuration, maximumDuration].
+	// it evaluates the duration with the jitter factor every time.
+	//
+	// in this case, the interval duration would be the random value between 1 sec and 2 secs.
+	c, err := jicker.NewJicker().TickBetween(ctx, 1*time.Second, 2*time.Second)
+	if err != nil {
+		log.Fatal(err)
+	}
+	for t := range c {
+		log.Printf("tick: %v", t)
+	}
+}
+```
+
 ## See also
 
 - https://golang.org/pkg/time/#Tick
