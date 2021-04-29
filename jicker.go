@@ -35,19 +35,11 @@ func (ji *Jicker) Tick(ctx context.Context, duration time.Duration, jitterFactor
 	go func() {
 		defer close(timeCh)
 
-		t := time.Now()
-		sleepingCh := make(chan struct{})
-
 		for {
 			jitteredDuration := time.Duration(ji.jitter(float64(duration), jitterFactor))
-			go func() {
-				time.Sleep(jitteredDuration)
-				t = t.Add(jitteredDuration)
-				sleepingCh <- struct{}{}
-			}()
 
 			select {
-			case <-sleepingCh:
+			case t := <-time.After(jitteredDuration):
 				select {
 				case timeCh <- t:
 				default:
