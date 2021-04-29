@@ -16,11 +16,11 @@ func TestJicker_Tick_WithJitter(t *testing.T) {
 
 	i := 1
 	c := NewJicker().Tick(ctx, 500*time.Millisecond, 0.2)
-	for t := range c {
+	for gotTime := range c {
 		if i >= 3 {
 			cancelFunc()
 		}
-		log.Printf("[debug] %v", t)
+		log.Printf("[debug] %v", gotTime)
 		i++
 	}
 
@@ -40,11 +40,11 @@ func TestJicker_Tick_WithFixed(t *testing.T) {
 
 	i := 1
 	c := NewJicker().Tick(ctx, 500*time.Millisecond, 0)
-	for t := range c {
+	for gotTime := range c {
 		if i >= 1 {
 			cancelFunc()
 		}
-		log.Printf("[debug] %v", t)
+		log.Printf("[debug] %v", gotTime)
 		i++
 	}
 
@@ -68,11 +68,11 @@ func TestJicker_TickBetween(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	for t := range c {
+	for gotTime := range c {
 		if i >= 3 {
 			cancelFunc()
 		}
-		log.Printf("[debug] %v", t)
+		log.Printf("[debug] %v", gotTime)
 		i++
 	}
 
@@ -96,11 +96,11 @@ func TestJicker_TickBetween_WithFixed(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	for t := range c {
+	for gotTime := range c {
 		if i >= 1 {
 			cancelFunc()
 		}
-		log.Printf("[debug] %v", t)
+		log.Printf("[debug] %v", gotTime)
 		i++
 	}
 
@@ -120,6 +120,17 @@ func TestJicker_TickBetween_ShouldRaiseErrorWhenArgumentsAreInverted(t *testing.
 	if err == nil {
 		t.Fatal("expected error has been nil")
 	}
+}
+
+func TestJicker_Tick_EnsureNonBlockingEvenIfClientDoesNotConsumeChannel(t *testing.T) {
+	ctx, cancelFunc := context.WithCancel(context.Background())
+	defer cancelFunc()
+
+	c := NewJicker().Tick(ctx, 10*time.Millisecond, 0)
+	time.Sleep(100 * time.Millisecond)
+
+	gotTime := <-c
+	log.Printf("[debug] %v", gotTime)
 }
 
 func ExampleJicker_Tick() {
