@@ -1,10 +1,13 @@
 PKGS := $(shell go list ./...)
 
 check: fmt-check test lint vet
-check-ci: fmt-check test vet
+check-ci: fmt-check test-ci vet
 
 test:
-	go test -v $(PKGS)
+	go test -v -cover -race $(PKGS)
+
+test-ci:
+	go test -v -cover -race -coverprofile=coverage.txt -covermode=atomic $(PKGS)
 
 lint:
 	golangci-lint run -v
