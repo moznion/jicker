@@ -1,4 +1,4 @@
-# jicker
+# jicker [![Go](https://github.com/moznion/jicker/actions/workflows/check.yml/badge.svg)](https://github.com/moznion/jicker/actions/workflows/check.yml)
 
 A jittered-ticker library for go.
 
