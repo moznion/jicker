@@ -19,7 +19,7 @@ jobs:
     - name: Do checking
       run: make check-ci
     - name: golangci-lint
-      uses: golangci/golangci-lint-action@v2
+      uses: golangci/golangci-lint-action@v9
       with:
         version: v1.39
     - name: upload coverage
